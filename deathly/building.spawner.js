@@ -10,7 +10,7 @@
 module.exports = {
     /** @param {Creep} creep **/
     update: function() {
-        var data = ["backup", "backup_builder", "Harvester", "Builder", "Upgrader"]
+        var data = ["backup", "backup_builder", "Harvester", "Builder", "Upgrader", "Miner"]
         
         for (name in Game.creeps) {
             for( var i = 0; i < data.length; i++) {
@@ -29,6 +29,9 @@ module.exports = {
         }
         
         
+        if (!("Miner" in data)) {
+            Game.spawns["Hive"].spawnCreep([WORK, WORK, MOVE, MOVE], "Miner", {memory : {role:"miner"}})
+        }
         if (!("Upgrader" in data)) {
             Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Upgrader", {memory : {role:"upgrader"}})
         }

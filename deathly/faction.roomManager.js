@@ -37,6 +37,11 @@ module.exports = {
             roomExcavator.update(room)
             roomDistribution.update(room)
             roomMaintance.update(room)
+            
+            cnt = taskmaster.getJobTypeCount(TaskType.UPGRADING)
+            cnt += taskmaster.getQueuedJobs(TaskType.UPGRADING)
+            if (cnt < 2)
+                taskmaster.addTask(upgradeTask.createTask(room)) //check if one already exists
         }
     }
 };

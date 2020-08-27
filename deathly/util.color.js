@@ -51,14 +51,19 @@ module.exports = {
             console.log(normalizedVal)
         }
         
-        minPos = Math.floor(normalizedVal * (colorArr.length - 1) / 255)
-        ratioVal = 255 / colorArr.length
-        minColor = colorArr[Math.max(minPos, 0)]
-        maxColor = colorArr[Math.min(minPos + 1, colorArr.length - 1)]
+        ratio = (colorArr.length - 1) / 255
         
-        minRatio = (normalizedVal - (ratioVal * minPos)) / 255
+        minPos = Math.floor(normalizedVal * ratio)
+        maxPos = Math.ceil(normalizedVal * ratio)
+        minColor = colorArr[minPos]
+        maxColor = colorArr[maxPos]
         
-        color = {r : minColor.r * minRatio + maxColor.r * (1 - minRatio), g : minColor.g * minRatio + maxColor.g * (1 - minRatio), b : minColor.b * minRatio + maxColor.b * (1 - minRatio)}
+        //minRatio = (normalizedVal - minPos) / (255 - (minPos * 255 / colorArr.length))
+        minRatio = (normalizedVal - (minPos / ratio)) / 255
+        
+        maxRatio = 1 - minRatio
+        
+        color = {r : minColor.r * maxRatio + maxColor.r * minRatio, g : minColor.g * maxRatio + maxColor.g * minRatio, b : minColor.b * maxRatio + maxColor.b * minRatio}
         
         return toHexCode(color)
         

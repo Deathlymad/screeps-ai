@@ -2,7 +2,9 @@ var colorUtil = require("util.color")
 var debugUtil = require("util.debug")
 var overlayManager = require("overlay.registration")
 
-var gradient = [{r : 0, g : 0, b : 255}, {r : 0, g : 255, b : 255}, {r : 0, g : 255, b : 0}, {r : 255, g : 255, b : 0}, {r : 255, g : 0, b : 0}]
+var gradient = [{r : 0, g : 0, b : 255}, {r : 0, g : 255, b : 0}, {r : 255, g : 0, b : 0}]
+
+//var gradient = [{r : 0, g : 0, b : 255}, {r : 255, g : 255, b : 255}]
 
 
 function displayPositionMatrix(visualObj)

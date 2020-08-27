@@ -191,18 +191,26 @@ module.exports = {
     },
     aquireMiningSpot : function(room, spot)
     {
+        console.log(spot)
+        console.log(room)
         if (Memory.rooms[room].miningSpots[spot] && Memory.rooms[room].miningSpots[spot].state == RESERVED)
         {
+            console.log(Memory.rooms[room].miningSpots[spot].state)
             Memory.rooms[room].miningSpots[spot].state = AQUIRED
+            console.log(Memory.rooms[room].miningSpots[spot].state)
             return spot
         }
         return -1
     },
     releaseMiningSpot : function(room, spot)
     {
+        console.log(spot)
+        console.log(room)
         if (Memory.rooms[room].miningSpots[spot] && Memory.rooms[room].miningSpots[spot].state == AQUIRED)
         {
+            console.log(Memory.rooms[room].miningSpots[spot].state)
             Memory.rooms[room].miningSpots[spot].state = FREE
+            console.log(Memory.rooms[room].miningSpots[spot].state)
         }
     }
 };

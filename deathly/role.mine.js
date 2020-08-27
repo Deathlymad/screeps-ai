@@ -17,7 +17,7 @@ module.exports = {
         creep.memory.spotLoc = excavation.getSpotLocation(data.room, creep.memory.spotID)
         creep.memory.sourceID = excavation.getSpotSource(data.room, creep.memory.spotID)
     },
-    
+
     update : function(creep)
     {
         if (creep.memory.spotLoc.x != creep.pos.x || creep.memory.spotLoc.y != creep.pos.y || creep.memory.spotLoc.roomName != creep.pos.roomName)
@@ -29,11 +29,12 @@ module.exports = {
             {
                 console.log("Creep encountered Error " + String(res) + " while harvesting.")
                 creep.memory.task = task.IDLE
-                excavation.releaseMiningSpot(creep.room.roomName, creep.memory.spotID)
+                excavation.releaseMiningSpot(creep.room.name, creep.memory.spotID)
             }
             else if (creep.ticksToLive <= 1)
             {
-                taskmaster.addTask(interface.createTask(creep.room.roomName, creep.memory.spotID))
+                excavation.releaseMiningSpot(creep.room.name, creep.memory.spotID)
+                taskmaster.addTask(interface.createTask(creep.room.name, excavation.reserveMiningSpot(creep.room.name)))
             }
     },
     
