@@ -41,6 +41,9 @@ module.exports = {
             {
                 creep.memory.task = task.IDLE
             }
+            
+            if (Game.getObjectById(creep.memory.site).hits == Game.getObjectById(creep.memory.site).hitsMax)
+                creep.memory.task = task.IDLE
         }
     },
     

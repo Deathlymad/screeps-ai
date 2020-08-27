@@ -10,11 +10,13 @@ var TaskType = require("role.taskmaster.task").TaskType
 module.exports = {
     setup : function()
     {
-        Memory.rooms = {}
+        if (!Memory.rooms)
+            Memory.rooms = {}
         
         for (room in Game.rooms)
         {
-            Memory.rooms[room] = {}
+            if (!Memory.rooms[room])
+                Memory.rooms[room] = {}
             Memory.rooms[room].sources = Game.rooms[room].find(FIND_SOURCES)
             roomOverlay.setup(room)
             roomEvaluation.setup(room)

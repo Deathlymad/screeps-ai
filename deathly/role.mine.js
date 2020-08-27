@@ -34,7 +34,7 @@ module.exports = {
             else if (creep.ticksToLive <= 1)
             {
                 excavation.releaseMiningSpot(creep.room.name, creep.memory.spotID)
-                taskmaster.addTask(interface.createTask(creep.room.name, excavation.reserveMiningSpot(creep.room.name)))
+                //taskmaster.addTask(interface.createTask(creep.room.name, excavation.reserveMiningSpot(creep.room.name)))
             }
     },
     

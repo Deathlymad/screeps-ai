@@ -48,31 +48,10 @@ function visualizeTargetMiningSpots(visual)
 module.exports = {
     setup : function(room)
     {
-        //calculate potential mining spots.
-        mineSpot = Game.rooms[room].find(FIND_STRUCTURES, {filter : function(obj) {
-                if (obj.structureType == STRUCTURE_CONTAINER)
-                {
-                    for (id in Memory.rooms[room].sources)
-                        if (Math.abs(Memory.rooms[room].sources[id].pos.x - obj.pos.x) <= 1 && Math.abs(Memory.rooms[room].sources[id].pos.y - obj.pos.y) <= 1)
-                            return true
-                    return false
-                }
-            }
-        })
-        Memory.rooms[room].miningSpots = {}
-        for (spot in mineSpot)
-        {
-            Memory.rooms[room].miningSpots[spot] = {}
-            for (source in Memory.rooms[room].sources)
-            {
-                if (Memory.rooms[room].sources[source].pos.getRangeTo(mineSpot[spot]) <= 1)
-                    Memory.rooms[room].miningSpots[spot].sourceID = Memory.rooms[room].sources[source].id
-            }
-            
-            Memory.rooms[room].miningSpots[spot].pos = mineSpot[spot].pos
-            Memory.rooms[room].miningSpots[spot].state = FREE
-            
-        }
+        if (!Memory.rooms[room].miningSpots)
+            Memory.rooms[room].miningSpots = {}
+        
+        module.exports.update(room)
         
         Memory.rooms[room].potentialMiningSpots = []
         
@@ -102,15 +81,6 @@ module.exports = {
                 }
         }
         
-        for (spot in Memory.rooms[room].miningSpots)
-        {
-            if (Memory.rooms[room].miningSpots[spot].state == FREE)
-            {
-                task = miner.createTask(room, module.exports.reserveMiningSpot(room))
-                taskmaster.addTask(task)
-            }
-        }
-        
         overlayRegistration.registerOverlay(visualizeTargetMiningSpots, "displayTargetSpotOverlay", "Renders the room overlay displaying all target potential mining spots.")
         
         //actually dynamic
@@ -130,6 +100,7 @@ module.exports = {
         })
         
         knownSpots = Object.keys(Memory.rooms[room].miningSpots).map(x => Memory.rooms[room].miningSpots[x].pos)
+        
         mineSpots = mineSpot.map(x => x.pos)
         
         var ret = [];
@@ -140,6 +111,7 @@ module.exports = {
         }
         for (entry of ret)
             mineSpots.splice(entry, 1)
+        
         
         for (spot in mineSpots)
         {
@@ -158,7 +130,6 @@ module.exports = {
         {
             if (Memory.rooms[room].miningSpots[spot].state == FREE)
             {
-                console.log(Memory.rooms[room].miningSpots[spot].state)
                 task = miner.createTask(room, module.exports.reserveMiningSpot(room))
                 taskmaster.addTask(task)
             }
@@ -191,26 +162,18 @@ module.exports = {
     },
     aquireMiningSpot : function(room, spot)
     {
-        console.log(spot)
-        console.log(room)
         if (Memory.rooms[room].miningSpots[spot] && Memory.rooms[room].miningSpots[spot].state == RESERVED)
         {
-            console.log(Memory.rooms[room].miningSpots[spot].state)
             Memory.rooms[room].miningSpots[spot].state = AQUIRED
-            console.log(Memory.rooms[room].miningSpots[spot].state)
             return spot
         }
         return -1
     },
     releaseMiningSpot : function(room, spot)
     {
-        console.log(spot)
-        console.log(room)
         if (Memory.rooms[room].miningSpots[spot] && Memory.rooms[room].miningSpots[spot].state == AQUIRED)
         {
-            console.log(Memory.rooms[room].miningSpots[spot].state)
             Memory.rooms[room].miningSpots[spot].state = FREE
-            console.log(Memory.rooms[room].miningSpots[spot].state)
         }
     }
 };

@@ -30,7 +30,7 @@ module.exports = {
         
         
         if (!("Miner" in data)) {
-            Game.spawns["Hive"].spawnCreep([WORK, WORK, MOVE, MOVE], "Miner", {memory : {role:"miner"}})
+            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Miner", {memory : {role:"miner"}})
         }
         if (!("Upgrader" in data)) {
             Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Upgrader", {memory : {role:"upgrader"}})

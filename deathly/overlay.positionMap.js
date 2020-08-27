@@ -57,8 +57,11 @@ function updatePosMat()
 module.exports = {
     setup : function()
     {
-        Memory.rooms[room].positionMatrix = {}
-        Memory.rooms[room].positionMatrix.max = 0
+        if (!Memory.rooms[room].positionMatrix)
+        {
+            Memory.rooms[room].positionMatrix = {}
+            Memory.rooms[room].positionMatrix.max = 0
+        }
         
         debugUtil.registerDebug(updatePosMat, "Update_Position_Matrix", 1)
         overlayManager.registerOverlay(displayPositionMatrix, "displayPositionMatrix", "This Function resets the Position Heatmap.")
@@ -66,7 +69,7 @@ module.exports = {
     
     resetPositionMatrix : function(room)
     {
-        Memory.rooms[room].positionMatrix = []
+        Memory.rooms[room].positionMatrix = {}
         Memory.rooms[room].positionMatrix.max = 0
         return "reset Position Matrix"
     },
