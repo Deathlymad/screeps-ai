@@ -38,6 +38,12 @@ module.exports = {
                 creep.moveTo(creep.room.controller);
             }
         }
+        
+        if (creep.ticksToLive <= 1)
+        {
+            creep.memory.task = task.IDLE
+            delete creep.memory.room
+        }
     },
     
     value : function(creep)

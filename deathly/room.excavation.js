@@ -134,9 +134,9 @@ module.exports = {
         
         var ret = [];
         for(var i in mineSpots) {   
-            if(knownSpots.indexOf(function(c_val) { return mineSpots[i].x == c_val.x && mineSpots[i].y == c_val.y && mineSpots[i].roomName == c_val.roomName }) > -1){
-                ret.push(i);
-            }
+            for (knownSpotKey in knownSpots)
+                if (mineSpots[i].x == knownSpots[knownSpotKey].x && mineSpots[i].y == knownSpots[knownSpotKey].y && mineSpots[i].roomName == knownSpots[knownSpotKey].roomName)
+                    ret.push(i);
         }
         for (entry of ret)
             mineSpots.splice(entry, 1)
@@ -158,6 +158,7 @@ module.exports = {
         {
             if (Memory.rooms[room].miningSpots[spot].state == FREE)
             {
+                console.log(Memory.rooms[room].miningSpots[spot].state)
                 task = miner.createTask(room, module.exports.reserveMiningSpot(room))
                 taskmaster.addTask(task)
             }

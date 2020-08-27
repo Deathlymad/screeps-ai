@@ -30,7 +30,7 @@ module.exports = {
                 return obj.structureType == STRUCTURE_CONTAINER && obj.store[RESOURCE_ENERGY] > 100
             }})
             if(creep.withdraw(sourceGoal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(storage);
+                creep.moveTo(sourceGoal);
             }
         }
         else {

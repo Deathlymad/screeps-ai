@@ -27,16 +27,16 @@ module.exports = {
         
         if(state) {
             var sourceGoal = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter : function(obj){
-                return obj.structureType == STRUCTURE_CONTAINER && obj.store[RESOURCE_ENERGY] > 100
+                return obj.structureType == STRUCTURE_CONTAINER && obj.store[RESOURCE_ENERGY]
             }})
             if(creep.withdraw(sourceGoal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(storage);
+                creep.moveTo(sourceGoal);
             }
         }
         else {
-            res = creep.repair(Object.getObjectById(creep.memory.site))
+            res = creep.repair(Game.getObjectById(creep.memory.site))
             if(res == ERR_NOT_IN_RANGE) {
-                creep.moveTo(Object.getObjectById(creep.memory.site));
+                creep.moveTo(Game.getObjectById(creep.memory.site));
             }
             else if (res == ERR_INVALID_TARGET)
             {

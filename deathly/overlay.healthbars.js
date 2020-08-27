@@ -7,7 +7,8 @@ function displayHealthBar(visual, obj)
 {
         color = colorUtil.getGradientColor(gradient, obj.hits, 0, obj.hitsMax)
         
-        visual.rect(obj.pos.x - 0.4, obj.pos.y - 0.3, 0.8, 0.2, {fill:color, opacity : 0.3})
+        visual.rect(obj.pos.x - 0.4, obj.pos.y - 0.3, 0.8, 0.2, {fill:"#000000", opacity : 0.3})
+        visual.rect(obj.pos.x - 0.4, obj.pos.y - 0.3, 0.8 * obj.hits / obj.hitsMax, 0.2, {fill:color, opacity : 0.3})
 }
 
 function displayHealthBars(visual)

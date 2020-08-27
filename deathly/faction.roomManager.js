@@ -2,7 +2,10 @@ var roomExcavator = require("room.excavation")
 var roomEvaluation = require("room.evaluate")
 var roomOverlay = require("room.overlay")
 var upgradeTask = require("role.upgrade")
+var roomDistribution = require("room.distribution")
+var roomMaintance = require("room.maintance")
 var taskmaster = require("role.taskmaster.interface")
+var TaskType = require("role.taskmaster.task").TaskType
 
 module.exports = {
     setup : function()
@@ -13,11 +16,15 @@ module.exports = {
         {
             Memory.rooms[room] = {}
             Memory.rooms[room].sources = Game.rooms[room].find(FIND_SOURCES)
-            roomExcavator.setup(room)
-            roomEvaluation.setup(room)
             roomOverlay.setup(room)
+            roomEvaluation.setup(room)
             
-            taskmaster.addTask(upgradeTask.createTask(room))
+            roomExcavator.setup(room)
+            roomDistribution.setup(room)
+            roomMaintance.setup(room)
+            
+            if (taskmaster.getJobTypeCount(TaskType.UPGRADING) < 2)
+                taskmaster.addTask(upgradeTask.createTask(room)) //check if one already exists
         }
     },
     
@@ -26,7 +33,10 @@ module.exports = {
         for (room in Game.rooms)
         {
             Memory.rooms[room].sources = Game.rooms[room].find(FIND_SOURCES)
+            
             roomExcavator.update(room)
+            roomDistribution.update(room)
+            roomMaintance.update(room)
         }
     }
 };

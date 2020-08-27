@@ -16,7 +16,7 @@ function updateConstructionList(room)
     
     for (site of constructionSites)
     {
-        if (!site in Object.keys(Memory.rooms[room].maintance.constructionSites))
+        if (Object.keys(Memory.rooms[room].maintance.constructionSites).indexOf(site) == -1)
         {
             Memory.rooms[room].maintance.constructionSites[site] = STATE_FREE
         }
@@ -28,7 +28,7 @@ function updateConstructionList(room)
     
     var ret = [];
     for(var i in idList) 
-        if(siteColl.indexOf(idList[i]) > -1)
+        if(siteColl.indexOf(idList[i]) == -1)
             ret.push(idList[i]);
     
     for (site of ret)
@@ -37,7 +37,7 @@ function updateConstructionList(room)
 
 function updateRepairList(room)
 {
-    var repairSites = Game.rooms[room].find(FIND_MY_STRUCTURES, {filter : function(obj) {
+    var repairSites = Game.rooms[room].find(FIND_STRUCTURES, {filter : function(obj) {
         return (obj.hits / obj.hitsMax) < repairThreshold
     }}).map(x => x.id)
     
@@ -45,7 +45,7 @@ function updateRepairList(room)
     
     for (site of repairSites)
     {
-        if (!site in Object.keys(Memory.rooms[room].maintance.repairSites))
+        if (Object.keys(Memory.rooms[room].maintance.repairSites).indexOf(site) == -1)
         {
             Memory.rooms[room].maintance.repairSites[site] = STATE_FREE
         }
@@ -57,11 +57,12 @@ function updateRepairList(room)
     
     var ret = [];
     for(var i in idList) 
-        if(siteColl.indexOf(idList[i]) > -1)
+        if(siteColl.indexOf(idList[i]) == -1)
             ret.push(idList[i]);
     
     for (site of ret)
         delete Memory.rooms[room].maintance.repairSites[site]
+    
 }
 
 module.exports = {
@@ -70,7 +71,7 @@ module.exports = {
         Memory.rooms[room].maintance = {}
         Memory.rooms[room].maintance.constructionSites = {}
         Memory.rooms[room].maintance.repairSites = {}
-    }
+    },
     
     update : function(room)
     {
