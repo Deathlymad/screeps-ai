@@ -1,5 +1,8 @@
 var task = require("role.taskmaster.task").TaskType
 
+/*
+ * add state migration to terminate upgrade action when storage is empty
+ */
 
 module.exports = {
     createTask : function(roomName)
@@ -56,16 +59,22 @@ module.exports = {
             {
                 case WORK:
                     score += 100
+                        break
                 case ATTACK :
                     score -= 50
+                        break
                 case RANGED_ATTACK :
                     score -= 50
+                        break
                 case HEAL :
                     score -= 50
+                        break
                 case CARRY :
                     score += 100
+                        break
                 case MOVE :
                     score += 35
+                        break
             }
         }
         

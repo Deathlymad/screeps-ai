@@ -1,8 +1,12 @@
 /*
  * To Do List
- * - dynamic spawn algorithm (creation and cleanup of creep objects)
+ * - cleanup task data from creep
+ * - make upgrade task terminate so it can switch
  * - assign transports
- * - create building and repair tasks
+ * - dynamic spawn algorithm (creation and cleanup of creep objects)
+ * - implement a more object oriented creep logic
+ * - for specialization it would be good if dedicated miners could force out temps
+ * - add memory watch
  * - design route planner
  * - create evaluators
  * - defense

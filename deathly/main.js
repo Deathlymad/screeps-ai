@@ -5,7 +5,6 @@ var cliUtil = require("util.cli")
 var roomManager = require("faction.roomManager")
 var overlayMain = require("overlay.main")
 var setup = false;
-var loop = true
 
 var backup = require("setup")
 
@@ -23,29 +22,51 @@ module.exports.loop = function () {
         setup = true
     }
 
-    if (Game.rooms["W8N4"].controller.ticksToDowngrade < 5000) //contingency mode
+    backup.upgrader()
+    backup.builder()
+    
+    try 
     {
-        backup.upgrader()
-        backup.builder()
+        spawner.update()
     }
-
-    if (loop)
+    catch(e)
     {
-        try
-        {
-            spawner.update()
-            
-            taskmaster.update()
-            
-            overlayMain.update()
-            
-            roomManager.update()
-            debugUtil.update()
-        }
-        catch (e)
-        {
-            loop = false
-            console.log(e.stack)
-        }
+        console.log(e.stack)
+    }
+    
+    try 
+    {
+        taskmaster.update()
+    }
+    catch(e)
+    {
+        console.log(e.stack)
+    }
+    
+    try 
+    {
+        overlayMain.update()
+    }
+    catch(e)
+    {
+        console.log(e.stack)
+    }
+    
+    try 
+    {
+        roomManager.update()
+    }
+    catch(e)
+    {
+        console.log(e.stack)
+    }
+    
+    try 
+    {
+        debugUtil.update()
+    }
+    catch(e)
+    {
+        console.log(e.stack)
     }
 }

@@ -145,6 +145,21 @@ module.exports = {
         return Memory.rooms[room].miningSpots[spotID].sourceID
     },
     
+    getActiveSpots : function(room)
+    {
+        var dataColl = []
+        for (obj in Memory.rooms[room].miningSpots)
+        {
+            if (Memory.rooms[room].miningSpots[obj].state == AQUIRED)
+            {
+                spot = obj
+                dataColl.push({sourceID : Memory.rooms[room].miningSpots[obj].sourceID, pos : Memory.rooms[room].miningSpots[obj].pos})
+            }
+        }
+        
+        return dataColl
+    },
+    
     reserveMiningSpot : function(room)
     {
         spot = -1

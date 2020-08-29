@@ -89,10 +89,10 @@ module.exports = {
         
         for (site in Memory.rooms[room].maintance.constructionSites)
         {
-            if (Memory.rooms[room].maintance.constructionSites[site])
+            if (Memory.rooms[room].maintance.constructionSites[site] == STATE_FREE)
             {
                 taskmaster.addTask(buildTask.createTask(site))
-                Memory.rooms[room].maintance.repairSites[site] = STATE_ACTIVE
+                Memory.rooms[room].maintance.constructionSites[site] = STATE_ACTIVE
             }
         }
     }

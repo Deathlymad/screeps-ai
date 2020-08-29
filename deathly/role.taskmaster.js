@@ -50,7 +50,7 @@ module.exports = {
                 if (Memory.taskmaster.queue.length > 0)
                 {
                     newTask = Memory.taskmaster.queue[0]
-                    newTaskEntry = null
+                    newTaskEntry = 0
                     for (entry in Memory.taskmaster.queue)
                     {
                         if (TaskModule[newTask.id].value(creep) < TaskModule[Memory.taskmaster.queue[entry].id].value(creep))
@@ -59,6 +59,7 @@ module.exports = {
                             newTaskEntry = entry
                         }
                     }
+                    
                     Memory.taskmaster.queue.splice(newTaskEntry, 1)
                     
                     TaskModule[newTask.id].initCreep(newTask, creep) //objectify

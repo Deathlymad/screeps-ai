@@ -18,7 +18,7 @@ module.exports = {
             }
         }
         
-        if (Game.rooms["W8N4"].controller.ticksToDowngrade < 5000) //contingency mode
+        if (Game.rooms["W8N4"].controller.ticksToDowngrade < 19000) //contingency mode
         {
             if (!("backup" in data)) {
                 Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "backup", {memory : {}})

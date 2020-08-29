@@ -30,12 +30,20 @@ module.exports = {
                 console.log("Creep encountered Error " + String(res) + " while harvesting.")
                 creep.memory.task = task.IDLE
                 excavation.releaseMiningSpot(creep.room.name, creep.memory.spotID)
+                delete creep.memory.spotID
+                delete creep.memory.spotLoc
+                delete creep.memory.sourceID
+        
             }
-            else if (creep.ticksToLive <= 1)
-            {
-                excavation.releaseMiningSpot(creep.room.name, creep.memory.spotID)
-                //taskmaster.addTask(interface.createTask(creep.room.name, excavation.reserveMiningSpot(creep.room.name)))
-            }
+        if (creep.ticksToLive <= 1)
+        {
+            creep.memory.task = task.IDLE
+            excavation.releaseMiningSpot(creep.room.name, creep.memory.spotID)
+            delete creep.memory.spotID
+            delete creep.memory.spotLoc
+            delete creep.memory.sourceID
+            //taskmaster.addTask(interface.createTask(creep.room.name, excavation.reserveMiningSpot(creep.room.name)))
+        }
     },
     
     value : function(creep)
@@ -52,14 +60,19 @@ module.exports = {
                 {
                     case WORK:
                         score += 100
+                        break
                     case ATTACK :
                         score -= 50
+                        break
                     case RANGED_ATTACK :
                         score -= 50
+                        break
                     case HEAL :
                         score -= 50
+                        break
                     case CARRY :
                         score -= 10
+                        break
                 }
             }
             

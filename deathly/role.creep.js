@@ -3,9 +3,14 @@
  */
 
 module.exports = { //should be added to prototype
-    setup: function(creep)
+    setup : function()
     {
         
+    },
+    
+    moveTo : function(creep, position)
+    {
+        creep.moveTo(position)
     },
     
     onBirth : function(creep)
@@ -15,6 +20,6 @@ module.exports = { //should be added to prototype
     
     onDeath : function(creep)
     {
-        
+        delete creep.memory
     }
 };

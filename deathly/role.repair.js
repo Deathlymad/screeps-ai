@@ -40,10 +40,16 @@ module.exports = {
             else if (res == ERR_INVALID_TARGET)
             {
                 creep.memory.task = task.IDLE
+                delete creep.memory.site
+                delete creep.memory.state
             }
             
             if (Game.getObjectById(creep.memory.site).hits == Game.getObjectById(creep.memory.site).hitsMax)
+            {
                 creep.memory.task = task.IDLE
+                delete creep.memory.site
+                delete creep.memory.state
+            }
         }
     },
     
@@ -57,16 +63,22 @@ module.exports = {
             {
                 case WORK:
                     score += 100
+                    break
                 case ATTACK :
                     score -= 50
+                   break
                 case RANGED_ATTACK :
                     score -= 50
+                    break
                 case HEAL :
                     score -= 50
+                    break
                 case CARRY :
                     score += 100
+                    break
                 case MOVE :
                     score += 35
+                    break
             }
         }
         
