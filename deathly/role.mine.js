@@ -28,21 +28,13 @@ module.exports = {
             if ( 0 != (res = creep.harvest(Game.getObjectById(creep.memory.sourceID))))
             {
                 console.log("Creep encountered Error " + String(res) + " while harvesting.")
-                creep.memory.task = task.IDLE
                 excavation.releaseMiningSpot(creep.room.name, creep.memory.spotID)
-                delete creep.memory.spotID
-                delete creep.memory.spotLoc
-                delete creep.memory.sourceID
-        
+                module.exports.endTask(creep)
             }
         if (creep.ticksToLive <= 1)
         {
-            creep.memory.task = task.IDLE
             excavation.releaseMiningSpot(creep.room.name, creep.memory.spotID)
-            delete creep.memory.spotID
-            delete creep.memory.spotLoc
-            delete creep.memory.sourceID
-            //taskmaster.addTask(interface.createTask(creep.room.name, excavation.reserveMiningSpot(creep.room.name)))
+            module.exports.endTask(creep)
         }
     },
     
@@ -78,5 +70,13 @@ module.exports = {
             
             return score / creep.body.length
         }
+    },
+    
+    endTask : function(creep)
+    {
+        creep.memory.task = task.IDLE
+        delete creep.memory.spotID
+        delete creep.memory.spotLoc
+        delete creep.memory.sourceID
     }
 };

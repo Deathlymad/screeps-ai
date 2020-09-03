@@ -18,7 +18,7 @@ module.exports = {
     
     update : function(creep)
     {
-        
+        creep.say("😴", true)
     },
     
     value : function(creep)
@@ -27,6 +27,11 @@ module.exports = {
     },
     
     initCreep : function(data, creep)
+    {
+        
+    },
+    
+    endTask : function(creep)
     {
         
     }

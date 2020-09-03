@@ -40,8 +40,7 @@ module.exports = {
             }
             else if (res == ERR_INVALID_TARGET)
             {
-                creep.memory.task = task.IDLE
-                delete creep.memory.site
+                module.exports.endTask(creep)
             }
         }
     },
@@ -82,5 +81,11 @@ module.exports = {
     {
         creep.memory.task = task.BUILDING
         creep.memory.site = data.site
+    },
+    
+    endTask : function(creep)
+    {
+        creep.memory.task = task.IDLE
+        delete creep.memory.site
     }
 };

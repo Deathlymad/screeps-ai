@@ -44,8 +44,7 @@ module.exports = {
         
         if (creep.ticksToLive <= 1)
         {
-            creep.memory.task = task.IDLE
-            delete creep.memory.room
+            module.exports.endTask(creep)
         }
     },
     
@@ -85,5 +84,11 @@ module.exports = {
     {
         creep.memory.task = task.UPGRADING
         creep.memory.room = data.room
+    },
+    
+    endTask : function(creep)
+    {
+        creep.memory.task = task.IDLE
+        delete creep.memory.room
     }
 };

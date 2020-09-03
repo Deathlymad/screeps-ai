@@ -29,6 +29,7 @@ module.exports = {
                 Game.creeps["backup"].moveTo(Game.creeps["backup"].room.controller);
             }
         }
+        Game.creeps["backup"].say("🚨", true)
     },
     
     
@@ -54,5 +55,6 @@ module.exports = {
                 Game.creeps["backup_builder"].moveTo(tgt);
             }
         }
+        Game.creeps["backup_builder"].say("🚨", true)
     }
 };

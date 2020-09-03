@@ -4,9 +4,10 @@ var debugUtil = require("util.debug")
 var cliUtil = require("util.cli")
 var roomManager = require("faction.roomManager")
 var overlayMain = require("overlay.main")
+var backup = require("setup")
+
 var setup = false;
 
-var backup = require("setup")
 
 module.exports.loop = function () {
     if (!setup)

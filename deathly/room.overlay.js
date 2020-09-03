@@ -30,13 +30,13 @@ function displayControllerOverlay(visual)
     if (visual.roomName in Game.rooms)
         displayFreeFieldsInArea(visual, Game.rooms[visual.roomName].controller.pos.x - 3, Game.rooms[visual.roomName].controller.pos.y - 3, 7, 7, {fill:"#CF0000", opacity : 0.3})
 }
-function displayMovementOverlay(room)
+function displayMovementOverlay(visual)
 {
     for (creep in Memory.creeps)
     {
         if (Memory.creeps[creep]._move)
         {
-            Game.rooms[room].visual.poly(Room.deserializePath(Memory.creeps[creep]._move.path), {stroke: '#fff', strokeWidth: .15, opacity: .2, lineStyle: 'dashed'})
+            visual.poly(Room.deserializePath(Memory.creeps[creep]._move.path), {stroke: '#fff', strokeWidth: .15, opacity: .2, lineStyle: 'dashed'})
         }
     }
 }

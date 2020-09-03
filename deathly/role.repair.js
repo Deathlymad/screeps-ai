@@ -39,16 +39,12 @@ module.exports = {
             }
             else if (res == ERR_INVALID_TARGET)
             {
-                creep.memory.task = task.IDLE
-                delete creep.memory.site
-                delete creep.memory.state
+                module.exports.endTask(creep)
             }
             
             if (Game.getObjectById(creep.memory.site).hits == Game.getObjectById(creep.memory.site).hitsMax)
             {
-                creep.memory.task = task.IDLE
-                delete creep.memory.site
-                delete creep.memory.state
+                module.exports.endTask(creep)
             }
         }
     },
@@ -90,5 +86,12 @@ module.exports = {
         creep.memory.task = task.REPAIRING
         creep.memory.site = data.obj
         creep.memory.state = true
+    },
+    
+    endTask : function(creep)
+    {
+        creep.memory.task = task.IDLE
+        delete creep.memory.site
+        delete creep.memory.state
     }
 };
