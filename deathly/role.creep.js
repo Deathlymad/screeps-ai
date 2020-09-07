@@ -13,7 +13,7 @@ module.exports = { //should be added to prototype
         creep.moveTo(position)
     },
     
-    onBirth : function(creep)
+    onSpawn : function(creep)
     {
         
     },

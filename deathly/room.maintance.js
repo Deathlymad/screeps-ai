@@ -1,5 +1,4 @@
 var taskmaster = require("role.taskmaster.interface")
-var scheduler = require("util.debug")
 var repairTask = require("role.repair")
 var buildTask = require("role.build")
 

@@ -36,6 +36,8 @@ module.exports = {
         return obj.r >= 0 && obj.r < 256 && obj.g >= 0 && obj.g < 256 && obj.b >= 0 && obj.b < 256
     },
     
+    colorToHex : toHexCode,
+    
     getGradientColor : function(colorArr = [{r : 255, g : 0, b : 0}, {r : 0, g : 255, b : 0}], val = 0, minVal = 0, maxVal = 255)
     {
         if (colorArr.length < 2)

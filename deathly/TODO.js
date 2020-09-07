@@ -1,15 +1,26 @@
 /*
- * To Do List
- * - make upgrade and mining task terminate so it can switch
- * - dynamic spawn algorithm (creation and cleanup of creep objects)
- * - restructure util.debug to scheduler
+ * To Do List:
+ 
+ * GENERAL:
  * - implement a more object oriented creep logic
- * - for specialization it would be good if dedicated miners could force out temps
  * - add memory watch
- * - design route planner
  * - create evaluators
- * - defense
+ 
+ * SPAWNING:
+ * - dynamic spawn algorithm (creation and cleanup of creep objects)
+ * - schedule on spawned when the creep is expected to perish
  * - predict death and provide exact timed replacement
+ 
+ * TASK MANAGEMENT:
+ * - make upgrade and mining task terminate so it can switch
+ * - for specialization it would be good if dedicated miners could force out temps
+ 
+ * LAYOUT:
+ * - define extension / consumer groups
+ * - design route planner
+ 
+ * FUTURE:
+ * - defense
  * - implement trading diplo
  */
  

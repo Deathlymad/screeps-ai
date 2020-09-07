@@ -1,4 +1,4 @@
-var debugUtil = require("util.debug")
+var scheduler = require("system.schedule")
 var cliUtil = require("util.cli")
 var TaskType = require("role.taskmaster.task").TaskType
 
@@ -71,8 +71,8 @@ module.exports = {
         Memory.rooms[room].eval.CreepCheckCtr = 0
         //add evaluation of travel time
         
-        debugUtil.registerDebug(evaluateConsumptionRatio.bind(null, room), "Room_Consumption_Evaluation_" + room, 5)
-        debugUtil.registerDebug(evaluateCreepPerformance.bind(null, room), "Room_Creep_Evaluation_" + room, 5)
+        scheduler.registerRecurrentCall(evaluateConsumptionRatio.bind(null, room), "Room_Consumption_Evaluation_" + room, 5)
+        scheduler.registerRecurrentCall(evaluateCreepPerformance.bind(null, room), "Room_Creep_Evaluation_" + room, 5)
         cliUtil.addCall(module.exports.printRoomSummary, "roomEvaluation", "Prints a summary of the rooms current state of operations.")
         
     },

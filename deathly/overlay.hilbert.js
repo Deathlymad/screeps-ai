@@ -49,54 +49,63 @@ function rotate(point, rx, ry, n) {
 
 module.exports = {
     
-    hilbert : [],
-    hilbertValued : [],
-    hilbertMax : 0,
-    hilbertMin : 0,
+    hilbert : {},
+    hilbertValued : {},
+    hilbertMax : {},
+    hilbertMin : {},
     
     setup : function()
     {
         overlayManager.registerOverlay(this.displayHilbert, "displayHilbert", "Displays a Hilbert curve over the map grid.")
-        this.genHilbert()
     },
     
     displayHilbert : function(visual)
     {
-        visual.poly(module.exports.hilbert)
-        for (entry of module.exports.hilbertValued)
+        //visual.poly(module.exports.hilbert)
+        if (!module.exports.hilbertValued.hasOwnProperty(visual.roomName))
         {
-            visual.rect(entry.x - 0.5, entry.y - 0.5, 1, 1, {fill : entry.color, opacity : 0.1})
+            console.log("generating")
+            module.exports.genHilbert(visual.roomName)
+        }
+        
+        
+        for (entry of module.exports.hilbertValued[visual.roomName])
+        {
+            visual.rect(entry.x - 0.5, entry.y - 0.5, 1, 1, {fill : entry.color, opacity : 0.4})
         }
     },
     
-    genHilbert : function()
+    genHilbert : function(room)
     {
-        module.exports.hilbertMin = 0
-        module.exports.hilbertMax = 0
+        module.exports.hilbertMin[room] = 0
+        module.exports.hilbertMax[room] = 0
+        module.exports.hilbert[room] = []
+        module.exports.hilbertValued[room] = []
         
-        terr = Game.map.getRoomTerrain("W8N4")
+        terr = Game.map.getRoomTerrain(room)
         const n = 2 ** 6;
         const curve = new Array(n * n);
         for (let index = 0; index < curve.length; index += 1) {
             const point = indexToPoint(index, 6);
-            module.exports.hilbert.push([Math.max(0, Math.min(point.x - 7, 49)), Math.max(0, Math.min(point.y - 7, 49))])
-            prevVal = {color : 0}
+            
+            if (point.x - 7 < 0 && point.x - 7 > 49 && point.y - 7 < 0 && point.y - 7 > 49)
+                continue
+            
+            module.exports.hilbert[room].push([Math.max(0, Math.min(point.x - 7, 49)), Math.max(0, Math.min(point.y - 7, 49))])
+            prevVal = {value : 0}
             
             value = 0
             if (point.x - 7 >= 0 && point.x - 7 <= 49 && point.y - 7 > 0 && point.y - 7 < 49)
             {
                 if (index > 0)
-                    value = module.exports.hilbertValued[index - 1].color
+                    value = module.exports.hilbertValued[room][index - 1].value
                 
                 if (terr.get(point.x - 7, point.y - 7) === TERRAIN_MASK_WALL)
-                    value = 0
+                    value = value/2
                 else
-                {
                     value += 1
-                    //value = 255
-                }
             }
-            module.exports.hilbertValued.push({ x : point.x - 7, y : point.y - 7, color : value})
+            module.exports.hilbertValued[room].push({ x : point.x - 7, y : point.y - 7, value : value})
         }
         
         for (let index = curve.length - 1; index >= 0; index -= 1) {
@@ -106,43 +115,39 @@ module.exports = {
             if (point.x - 7 >= 0 && point.x - 7 <= 49 && point.y - 7 >= 0 && point.y - 7 <= 49)
             {
                 if (index < curve.length - 1)
-                    value = module.exports.hilbertValued[index + 1].color
+                    value = module.exports.hilbertValued[room][index + 1].value
                 
-                value += module.exports.hilbertValued[index].color 
+                value += module.exports.hilbertValued[room][index].value 
                 if (terr.get(point.x - 7, point.y - 7) === TERRAIN_MASK_WALL)
-                    value = 0
+                    value = value/2
                 else
-                {
                     value += 1
-                    //value = 255
-                }
             }
-            module.exports.hilbertValued[index].color = Math.min(128, value)
+            module.exports.hilbertValued[room][index].value = value
         }
         
-        module.exports.hilbertMax = 128
+        module.exports.hilbertValued[room] = module.exports.hilbertValued[room].filter((entry) => entry.value > 96)
         
-        top20 = Math.floor(module.exports.hilbertValued.length * 0.18)
-        module.exports.hilbertValued = module.exports.hilbertValued.sort((a, b) => a.color > b.color ? -1 : 1)
-        module.exports.hilbertValued = module.exports.hilbertValued.slice(0, top20)
-        
-        
-        for (entry in module.exports.hilbertValued)
+        for (entry in module.exports.hilbertValued[room])
         {
-            if (module.exports.hilbertMax < module.exports.hilbertValued[entry].color)
-            {
-                module.exports.hilbertMax = module.exports.hilbertValued[entry].color
-            }
-            if (module.exports.hilbertMin > module.exports.hilbertValued[entry].color)
-            {
-                module.exports.hilbertMin = module.exports.hilbertValued[entry].color
-            }
+            if (module.exports.hilbertMax[room] < module.exports.hilbertValued[room][entry].value)
+                module.exports.hilbertMax[room] = module.exports.hilbertValued[room][entry].value
+            if (module.exports.hilbertMin[room] > module.exports.hilbertValued[room][entry].value)
+                module.exports.hilbertMin[room] = module.exports.hilbertValued[room][entry].value
         }
         
-        for (entry in module.exports.hilbertValued)
+        color = colorUtil.colorToHex({r : Math.random() * 200 + 55, g : Math.random() * 200 + 55, b : Math.random() * 200 + 55})
+        
+        console.log(color)
+        
+        for (let index = 1; index < module.exports.hilbertValued[room].length; index += 1)
         {
-            col = Math.max(module.exports.hilbertMin, Math.min(module.exports.hilbertMax, module.exports.hilbertValued[entry].color))
-            module.exports.hilbertValued[entry].color = colorUtil.getGradientColor([{r : 255, g : 0, b : 0}, {r : 0, g : 255, b : 0}], col, module.exports.hilbertMin, module.exports.hilbertMax)
+            col = Math.max(module.exports.hilbertMin[room], Math.min(module.exports.hilbertMax[room], module.exports.hilbertValued[room][index].value))
+            
+            if (module.exports.hilbertValued[room][index].value > module.exports.hilbertValued[room][index - 1].value)
+                color = colorUtil.colorToHex({r : Math.random() * 200 + 55, g : Math.random() * 200 + 55, b : Math.random() * 200 + 55})
+            //module.exports.hilbertValued[index].color = colorUtil.getGradientColor([{r : 255, g : 0, b : 0}, {r : 0, g : 255, b : 0}], Math.min(128, col), module.exports.hilbertMin, module.exports.hilbertMax)
+            module.exports.hilbertValued[room][index].color = color
         }
         
         

@@ -1,5 +1,5 @@
 var colorUtil = require("util.color")
-var debugUtil = require("util.debug")
+var scheduler = require("system.schedule")
 var overlayManager = require("overlay.registration")
 
 var gradient = [{r : 0, g : 0, b : 255}, {r : 0, g : 255, b : 0}, {r : 255, g : 0, b : 0}]
@@ -63,7 +63,7 @@ module.exports = {
             Memory.rooms[room].positionMatrix.max = 0
         }
         
-        debugUtil.registerDebug(updatePosMat, "Update_Position_Matrix", 1)
+        scheduler.registerRecurrentCall(updatePosMat, "Update_Position_Matrix", 1)
         overlayManager.registerOverlay(displayPositionMatrix, "displayPositionMatrix", "This Function resets the Position Heatmap.")
     },
     

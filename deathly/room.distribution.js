@@ -1,4 +1,4 @@
-var debugUtil = require("util.debug")
+var scheduler = require("system.schedule")
 var excavation = require("room.excavation")
 var taskmaster = require("role.taskmaster.interface")
 var transport = require("role.transport")
@@ -34,7 +34,7 @@ function updateStructureData(room){
 module.exports = {
     setup : function(room)
     {
-        debugUtil.registerDebug(updateStructureData.bind(null, room), "updateDistributionStructures", 100)
+        scheduler.registerRecurrentCall(updateStructureData.bind(null, room), "updateDistributionStructures", 100)
     },
     
     update : function(room)

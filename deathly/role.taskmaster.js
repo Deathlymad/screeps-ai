@@ -1,6 +1,3 @@
-var roleHarvester = require('role.harvester');
-var roleUpgrader = require('role.upgrader');
-var roleBuilder = require('role.builder');
 var TaskType = require("role.taskmaster.task").TaskType
 
 TaskModule = {
@@ -27,8 +24,10 @@ module.exports = {
             TaskModule[task].setup()
         }
         
-        Memory.taskmaster = {}
-        Memory.taskmaster.queue = []
+        if (!Memory.taskmaster.queue)
+            Memory.taskmaster = {}
+        if (!Memory.taskmaster.queue)
+            Memory.taskmaster.queue = []
     },
     
     update : function()

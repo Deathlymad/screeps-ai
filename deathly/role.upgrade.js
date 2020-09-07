@@ -32,6 +32,8 @@ module.exports = {
             var sourceGoal = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter : function(obj){
                 return obj.structureType == STRUCTURE_CONTAINER && obj.store[RESOURCE_ENERGY] > 100
             }})
+            if (sourceGoal === undefined)
+                module.exports.endTask(creep)
             if(creep.withdraw(sourceGoal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sourceGoal);
             }

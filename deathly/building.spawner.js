@@ -1,12 +1,5 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('building.spawner');
- * mod.thing == 'a thing'; // true
- */
-
+creepHandler = require("role.creep")
+scheduler = require("system.schedule")
 module.exports = {
     /** @param {Creep} creep **/
     update: function() {
@@ -22,24 +15,30 @@ module.exports = {
         {
             if (!("backup" in data)) {
                 Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "backup", {memory : {}})
+                scheduler.registerOffsetCall( creepHandler.onSpawn.bind(null, "backup"), "onSpawn_backup_Hive", 12)
             }
             if (!("backup_builder" in data)) {
                 Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "backup_builder", {memory : {}})
+                scheduler.registerOffsetCall( creepHandler.onSpawn.bind(null, "backup_builder"), "onSpawn_backup_builder_Hive", 12)
             }
         }
         
         
         if (!("Miner" in data)) {
-            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Miner", {memory : {role:"miner"}})
+            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Miner", {memory : {}})
+            scheduler.registerOffsetCall( creepHandler.onSpawn.bind(null, "Miner"), "onSpawn_Miner_Hive", 12)
         }
         if (!("Upgrader" in data)) {
-            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Upgrader", {memory : {role:"upgrader"}})
+            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Upgrader", {memory : {}})
+            scheduler.registerOffsetCall( creepHandler.onSpawn.bind(null, "Upgrader"), "onSpawn_Upgrader_Hive", 12)
         }
         if (!("Builder" in data)) {
-            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Builder", {memory : {role:"builder"}})
+            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Builder", {memory : {}})
+            scheduler.registerOffsetCall( creepHandler.onSpawn.bind(null, "Builder"), "onSpawn_Builder_Hive", 12)
         }
         if (!("Harvester" in data)) {
-            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Harvester", {memory : {role:"harvester"}})
+            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Harvester", {memory : {}})
+            scheduler.registerOffsetCall( creepHandler.onSpawn.bind(null, "Harvester"), "onSpawn_Harvester_Hive", 12)
         }
     }
 };
