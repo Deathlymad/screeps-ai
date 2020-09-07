@@ -1,3 +1,5 @@
+cliUtil = require("util.cli")
+
 var scheduler = (function() {
     
     schedule = []
@@ -10,7 +12,7 @@ var scheduler = (function() {
     		return begin;
     	else
     	{
-    		if (schedule[begin + (range >> 1)].nextInvocation < val.nextInvocation)
+    		if (schedule[begin + (range >> 1)].nextInvocation > val.nextInvocation)
     			return findPosRec(val, begin, begin + (range >> 1));
     		else
     			return findPosRec(val, begin + (range >> 1) + (range & 1 ? 1 : 0), end);
@@ -27,18 +29,18 @@ var scheduler = (function() {
     
     publicFuncs = {
         setup : function() {
-    		
+            cliUtil.addCall(this.printSchedule, "printSchedule", "Prints the schedule.")
         },
         
-    	registerOffsetCall : function(func, name, offset = 0) {
-    		this.registerCallEx(func, name, offset)
+    	registerOffsetCall : function(func, name, offset) {
+    		this.registerCallEx(func, name, offset, 0)
     	},
     	
-    	registerRecurrentCall : function(func, name, freq = 0) {
+    	registerRecurrentCall : function(func, name, freq) {
     		this.registerCallEx(func, name, 0, freq)
     	},
     	
-        registerCallEx : function(func, name, offset = 0, freq = 0)
+        registerCallEx : function(func, name, offset, freq)
         {
     		//Sanitization needed
             insert({name : name, func : func, frequency : freq, nextInvocation : Game.time + 1 + offset})
@@ -54,8 +56,7 @@ var scheduler = (function() {
     			obj.func()
     			if (obj.frequency > 0)
     			{
-    			    console.log(obj.frequency)
-    				schedule.push({name : obj.name, func : obj.func, frequency : obj.frequency, nextInvocation : Game.time + 1 + obj.frequency})
+    				insert({name : obj.name, func : obj.func, frequency : obj.frequency, nextInvocation : Game.time + 1 + obj.frequency})
     			}
             }
             if (	schedule.length > 0 && 							//check whether there might still be something to do
@@ -64,6 +65,10 @@ var scheduler = (function() {
                 console.log("WARNING: Debugger is having a noticable carryover. Debug budget needs to be increased or debug functions optimized.", 'background: #222; color: #ff0000')
                 console.log("The Debug operation that used the most budget is ." + maxTime.name, 'background: #222; color: #ff0000')
             }
+        },
+        
+        printSchedule : function() {
+            console.log(JSON.stringify(schedule))
         }
     }
     

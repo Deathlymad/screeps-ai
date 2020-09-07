@@ -8,7 +8,6 @@
  
  * SPAWNING:
  * - dynamic spawn algorithm (creation and cleanup of creep objects)
- * - schedule on spawned when the creep is expected to perish
  * - predict death and provide exact timed replacement
  
  * TASK MANAGEMENT:
