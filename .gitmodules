@@ -1,0 +1,3 @@
+[submodule "PythonLibs"]
+	path = PythonLibs
+	url = https://github.com/Deathlymad/PythonLibs
