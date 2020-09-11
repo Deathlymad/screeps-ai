@@ -94,5 +94,10 @@ module.exports = {
                 Memory.rooms[room].maintance.constructionSites[site] = STATE_ACTIVE
             }
         }
+    },
+    
+    unlockState : function(room, site)
+    {
+        Memory.rooms[room].maintance.constructionSites[site] = STATE_FREE
     }
 };

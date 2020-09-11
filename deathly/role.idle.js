@@ -33,6 +33,6 @@ module.exports = {
     
     endTask : function(creep)
     {
-        
+        Memory.creeps[creepName].task = task.IDLE
     }
 };

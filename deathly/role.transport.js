@@ -1,5 +1,5 @@
 var taskmaster = require("role.taskmaster.interface")
-var task = require("role.taskmaster.task").TaskType
+var TaskType = require("role.taskmaster.task").TaskType
 
 /*
  * This is the example task that can be copied for all other tasks
@@ -8,7 +8,7 @@ var task = require("role.taskmaster.task").TaskType
 module.exports = {
     createTask : function(src, tgt, type, amount)
     {
-        return {id : task.TRANSPORTING, resSource : src, resTarget : tgt, resType : type, resAmt : amount}
+        return {id : TaskType.TRANSPORTING, resSource : src, resTarget : tgt, resType : type, resAmt : amount}
     },
     verifyTask : function(obj)
     {
@@ -44,11 +44,11 @@ module.exports = {
                 
                 if (res == ERR_NOT_IN_RANGE)
                 {
-                        creep.moveTo(src)
+                    creep.moveTo(src)
                 }
                 else if (res == ERR_INVALID_ARGS)
                 {
-                        module.exports.endTask(creep)
+                    module.exports.endTask(creep.name)
                 }
             }
             else
@@ -64,7 +64,7 @@ module.exports = {
                 }
                 else if (res == ERR_INVALID_ARGS)
                 {
-                        module.exports.endTask(creep)
+                        module.exports.endTask(creep.name)
                 }
                 creep.memory.transportAmount -= transportAmt
             }
@@ -72,7 +72,7 @@ module.exports = {
         else
         {
             Memory.rooms[creep.memory.tgt.pos.roomName].structures[creep.memory.tgt.id].filling = false
-            module.exports.endTask(creep)
+            module.exports.endTask(creep.name)
         }
     },
     
@@ -113,26 +113,26 @@ module.exports = {
         }
     },
     
-    endTask : function(creep)
+    endTask : function(creepName)
     {
-        if (creep.memory.transportAmount > 0)
+        if (Memory.creeps[creepName].transportAmount > 0)
         {
-            taskmaster.addTask(module.exports.createTask(creep.memory.src, creep.memory.tgt, creep.memory.transportType, creep.memory.transportAmount))
+            taskmaster.addTask(module.exports.createTask(Memory.creeps[creepName].src, Memory.creeps[creepName].tgt, Memory.creeps[creepName].transportType, Memory.creeps[creepName].transportAmount))
         }
-        creep.memory.task = task.IDLE
-        delete creep.memory.src
-        delete creep.memory.tgt
-        delete creep.memory.transportType
-        delete creep.memory.transportAmount
+        Memory.creeps[creepName].task = TaskType.IDLE
+        delete Memory.creeps[creepName].src
+        delete Memory.creeps[creepName].tgt
+        delete Memory.creeps[creepName].transportType
+        delete Memory.creeps[creepName].transportAmount
     },
     
     initCreep : function(data, creep)
     {
-        creep.memory.task = task.TRANSPORTING
+        Memory.creeps[creepName].task = TaskType.TRANSPORTING
         
-        creep.memory.src = { id : data.resSource.id, pos : data.resSource.pos}
-        creep.memory.tgt = { id : data.resTarget.id, pos : data.resTarget.pos}
-        creep.memory.transportType = data.resType
-        creep.memory.transportAmount = data.resAmt
+        Memory.creeps[creepName].src = { id : data.resSource.id, pos : data.resSource.pos}
+        Memory.creeps[creepName].tgt = { id : data.resTarget.id, pos : data.resTarget.pos}
+        Memory.creeps[creepName].transportType = data.resType
+        Memory.creeps[creepName].transportAmount = data.resAmt
     }
 };

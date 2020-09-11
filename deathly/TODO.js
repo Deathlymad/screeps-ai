@@ -11,8 +11,9 @@
  * - predict death and provide exact timed replacement
  
  * TASK MANAGEMENT:
- * - make upgrade and mining task terminate so it can switch
+ * - make mining task terminate so it can switch
  * - for specialization it would be good if dedicated miners could force out temps
+ * - reschedule upgrade tasks
  
  * LAYOUT:
  * - define extension / consumer groups
@@ -21,5 +22,9 @@
  * FUTURE:
  * - defense
  * - implement trading diplo
+ * - find deadlock states
+ 
+ * KNOWN BUGS:
+ * - screep got killed in fight and respawned before on death triggered => uniquification of names
  */
  

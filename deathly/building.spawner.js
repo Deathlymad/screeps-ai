@@ -13,32 +13,31 @@ module.exports = {
         
         if (Game.rooms["W8N4"].controller.ticksToDowngrade < 19000) //contingency mode
         {
-            if ("backup" in data) {
-                Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "backup", {memory : {}})
-                scheduler.registerOffsetCall( function(){creepHandler.onSpawn("backup")}, "onSpawn_backup_Hive", 12)
-            }
-            if ("backup_builder" in data) {
-                Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "backup_builder", {memory : {}})
-                scheduler.registerOffsetCall( function(){creepHandler.onSpawn("backup_builder")}, "onSpawn_backup_builder_Hive", 12)
+            if (data.includes("backup")) {
+                if (Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "backup") === OK)
+                    scheduler.registerOffsetCall( function(){creepHandler.onSpawn("backup")}, "onSpawn_backup_Hive", 12)
             }
         }
+            if (data.includes("backup_builder")) {
+                if (Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "backup_builder") === OK)
+                    scheduler.registerOffsetCall( function(){creepHandler.onSpawn("backup_builder")}, "onSpawn_backup_builder_Hive", 12)
+            }
         
-        
-        if ("Miner" in data) {
-            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Miner", {memory : {}})
-            scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Miner")}, "onSpawn_Miner_Hive", 12)
+        if (data.includes("Miner")) {
+            if (Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Miner") === OK)
+                scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Miner")}, "onSpawn_Miner_Hive", 12)
         }
-        if ("Upgrader" in data) {
-            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Upgrader", {memory : {}})
-            scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Upgrader")}, "onSpawn_Upgrader_Hive", 12)
+        if (data.includes("Upgrader")) {
+            if (Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Upgrader") === OK)
+                scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Upgrader")}, "onSpawn_Upgrader_Hive", 12)
         }
-        if ("Builder" in data) {
-            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Builder", {memory : {}})
-            scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Builder")}, "onSpawn_Builder_Hive", 12)
+        if (data.includes("Builder")) {
+            if (Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Builder") === OK)
+                scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Builder")}, "onSpawn_Builder_Hive", 12)
         }
-        if ("Harvester" in data) {
-            Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Harvester", {memory : {}})
-            scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Harvester")}, "onSpawn_Harvester_Hive", 12)
+        if (data.includes("Harvester")) {
+            if (Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Harvester") === OK)
+                scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Harvester")}, "onSpawn_Harvester_Hive", 12)
         }
     }
 };

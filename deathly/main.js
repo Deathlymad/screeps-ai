@@ -33,15 +33,6 @@ module.exports.loop = function () {
     
     try 
     {
-        spawner.update()
-    }
-    catch(e)
-    {
-        console.log(e.stack)
-    }
-    
-    try 
-    {
         taskmaster.update()
     }
     catch(e)
@@ -68,4 +59,13 @@ module.exports.loop = function () {
     }
     
     scheduler.update()
+    
+    try 
+    {
+        spawner.update()
+    }
+    catch(e)
+    {
+        console.log(e.stack)
+    }
 }

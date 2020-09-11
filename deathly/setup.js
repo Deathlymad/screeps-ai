@@ -51,8 +51,18 @@ module.exports = {
         }
         else {
             var tgt = Game.creeps["backup_builder"].pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-            if(Game.creeps["backup_builder"].build(tgt) == ERR_NOT_IN_RANGE) {
-                Game.creeps["backup_builder"].moveTo(tgt);
+            if (tgt !== null)
+                if(Game.creeps["backup_builder"].build(tgt) == ERR_NOT_IN_RANGE) {
+                    Game.creeps["backup_builder"].moveTo(tgt);
+                }
+            else {
+                var tgt = Game.creeps["backup_builder"].pos.findClosestByPath(FIND_STRUCTURES, {filter : function(obj) {
+                    return (obj.hits / obj.hitsMax) < 0.8
+                }})
+                if (tgt !== null)
+                    if(Game.creeps["backup_builder"].repair(tgt) == ERR_NOT_IN_RANGE) {
+                        Game.creeps["backup_builder"].moveTo(tgt);
+                    }
             }
         }
         Game.creeps["backup_builder"].say("🚨", true)

@@ -84,7 +84,7 @@ module.exports = {
         }
         else //storage needs to be resupplied
         {
-            if (energySources.length == 0)
+            if (energySources instanceof Array && energySources.length == 0)
                 return
             maxEnergy = -1
             maxSpotID = -1
@@ -95,6 +95,10 @@ module.exports = {
                 delta = Memory.rooms[room].structures[structID].cap - obj.store[RESOURCE_ENERGY]
                 for (spot in energySources)
                 {
+                    if (energySources[spot] === undefined)
+                        continue
+                    if (energySources[spot].store === undefined)
+                        continue
                     if (energySources[spot].store[RESOURCE_ENERGY] > maxEnergy)
                     {
                         maxSpotID = spot

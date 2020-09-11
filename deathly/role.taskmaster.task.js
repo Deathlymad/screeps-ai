@@ -9,11 +9,11 @@
 
 module.exports = {
      TaskType : {
-        IDLE : 0,
         MINING : 1,
         BUILDING : 2,
         REPAIRING : 3,
         UPGRADING : 4,
-        TRANSPORTING : 5
+        TRANSPORTING : 5,
+        IDLE : 6
     }
 };

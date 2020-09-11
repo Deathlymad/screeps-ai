@@ -1,10 +1,10 @@
-var task = require("role.taskmaster.task").TaskType
+var TaskType = require("role.taskmaster.task").TaskType
 
 
 module.exports = {
     createTask : function(site)
     {
-        return {id : task.REPAIRING, obj : site}
+        return {id : TaskType.REPAIRING, obj : site}
     },
     verifyTask : function(obj)
     {
@@ -37,14 +37,10 @@ module.exports = {
             if(res == ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.site));
             }
-            else if (res == ERR_INVALID_TARGET)
-            {
-                module.exports.endTask(creep)
-            }
             
             if (Game.getObjectById(creep.memory.site).hits == Game.getObjectById(creep.memory.site).hitsMax)
             {
-                module.exports.endTask(creep)
+                module.exports.endTask(creep.name)
             }
         }
     },
@@ -83,15 +79,16 @@ module.exports = {
     
     initCreep : function(data, creep)
     {
-        creep.memory.task = task.REPAIRING
+        creep.memory.task = TaskType.REPAIRING
         creep.memory.site = data.obj
         creep.memory.state = true
     },
     
-    endTask : function(creep)
+    endTask : function(creepName)
     {
-        creep.memory.task = task.IDLE
-        delete creep.memory.site
-        delete creep.memory.state
+        //needs to reschedule?
+        Memory.creeps[creepName].task = TaskType.IDLE
+        delete Memory.creeps[creepName].site
+        delete Memory.creeps[creepName].state
     }
 };

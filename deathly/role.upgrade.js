@@ -32,8 +32,9 @@ module.exports = {
             var sourceGoal = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter : function(obj){
                 return obj.structureType == STRUCTURE_CONTAINER && obj.store[RESOURCE_ENERGY] > 100
             }})
-            if (sourceGoal === undefined)
-                module.exports.endTask(creep)
+            
+            if (sourceGoal === null)
+                module.exports.endTask(creep.name)
             if(creep.withdraw(sourceGoal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sourceGoal);
             }
@@ -42,11 +43,6 @@ module.exports = {
             if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
             }
-        }
-        
-        if (creep.ticksToLive <= 1)
-        {
-            module.exports.endTask(creep)
         }
     },
     
@@ -88,9 +84,10 @@ module.exports = {
         creep.memory.room = data.room
     },
     
-    endTask : function(creep)
+    endTask : function(creepName)
     {
-        creep.memory.task = task.IDLE
-        delete creep.memory.room
+        Memory.creeps[creepName].task = task.IDLE
+        delete Memory.creeps[creepName].room
+        delete Memory.creeps[creepName].upgradeState
     }
 };

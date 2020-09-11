@@ -1,20 +1,23 @@
 var TaskType = require("role.taskmaster.task").TaskType
 
 TaskModule = {
-    0 : require("role.idle"), //empty default state
-    1 : require("role.mine"), //goes to mining spot and mines
-    2 : require("role.build"), //builds construction site
-    3 : require("role.repair"), //repairs damaged buildings
-    4 : require("role.upgrade"), //upgrades controller
-    5 : require("role.transport")
+    1 : require("role.mine"),       //goes to mining spot and mines
+    2 : require("role.build"),      //builds construction site
+    3 : require("role.repair"),     //repairs damaged buildings
+    4 : require("role.upgrade"),    //upgrades controller
+    5 : require("role.transport"),  //transports resource from a to b
+    6 : require("role.idle")        //empty default state
 }
 
 module.exports = {
     setup : function()
     {
         for(var name in Game.creeps) 
-            if (!Game.creeps[name].memory.task)
+            if (!Object.keys(Game.creeps[name].memory).includes("task"))
+            {
+                //console.log("task entry missing in memory upon init")
                 Game.creeps[name].memory.task = TaskType.IDLE
+            }
         
         for (task in TaskModule)
         {
@@ -39,12 +42,16 @@ module.exports = {
             if (name == "backup_builder")
                 continue
             
-            
-            creep = Game.creeps[name]
-            
-            if (!creep.memory.task)
-                creep.memory.task = TaskType.IDLE
-            if (creep.memory.task == TaskType.IDLE)
+            if (!Object.keys(Memory.creeps).includes(name))
+            {
+                Memory.creeps[name] = {}
+            }
+            if (!Object.keys(Memory.creeps[name]).includes("task"))
+            {
+                //console.log("Reset task (" + Memory.creeps[name].task + ") of creep " + name)
+                Memory.creeps[name].task = TaskType.IDLE
+            }
+            if (Memory.creeps[name].task === TaskType.IDLE)
             {
                 if (Memory.taskmaster.queue.length > 0)
                 {
@@ -52,7 +59,7 @@ module.exports = {
                     newTaskEntry = 0
                     for (entry in Memory.taskmaster.queue)
                     {
-                        if (TaskModule[newTask.id].value(creep) < TaskModule[Memory.taskmaster.queue[entry].id].value(creep))
+                        if (TaskModule[newTask.id].value(Game.creeps[name]) < TaskModule[Memory.taskmaster.queue[entry].id].value(Game.creeps[name]))
                         {
                             newTask = Memory.taskmaster.queue[entry]
                             newTaskEntry = entry
@@ -61,10 +68,22 @@ module.exports = {
                     
                     Memory.taskmaster.queue.splice(newTaskEntry, 1)
                     
-                    TaskModule[newTask.id].initCreep(newTask, creep) //objectify
+                    TaskModule[newTask.id].initCreep(newTask, Game.creeps[name]) //objectify
                 }
             }
-            TaskModule[creep.memory.task].update(creep)
+            TaskModule[Memory.creeps[name].task].update(Game.creeps[name])
         }
+    },
+    
+    cleanupCreep : function(creepName)
+    {
+        console.log("Cleaning up " + creepName)
+        if (creepName == "backup")
+            return
+        if (creepName == "backup_builder")
+            return
+        
+        console.log("Invoking cleanup of " + String(Memory.creeps[creepName].task) +  " for creep " + creepName)
+        TaskModule[Memory.creeps[creepName].task].endTask(creepName)
     }
 };

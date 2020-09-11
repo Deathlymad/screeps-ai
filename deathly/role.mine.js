@@ -1,5 +1,5 @@
 var excavation = require("room.excavation")
-var task = require("role.taskmaster.task").TaskType
+var TaskType = require("role.taskmaster.task").TaskType
 var interface = require("role.mine.interface")
 var taskmaster = require("role.taskmaster.interface")
 
@@ -12,7 +12,8 @@ module.exports = {
     
     initCreep : function(data, creep)
     {
-        creep.memory.task = task.MINING
+        creep.memory.task = TaskType.MINING
+        creep.memory.room = data.room
         creep.memory.spotID = excavation.aquireMiningSpot(data.room, data.spotID)
         creep.memory.spotLoc = excavation.getSpotLocation(data.room, creep.memory.spotID)
         creep.memory.sourceID = excavation.getSpotSource(data.room, creep.memory.spotID)
@@ -22,20 +23,14 @@ module.exports = {
     {
         if (creep.memory.spotLoc.x != creep.pos.x || creep.memory.spotLoc.y != creep.pos.y || creep.memory.spotLoc.roomName != creep.pos.roomName)
         {
-            creep.moveTo(new RoomPosition(creep.memory.spotLoc.x, creep.memory.spotLoc.y, creep.memory.spotLoc.roomName), {visualizePathStyle : {}})
+            creep.moveTo(new RoomPosition(creep.memory.spotLoc.x, creep.memory.spotLoc.y, creep.memory.spotLoc.roomName))
         }
         else
-            if ( 0 != (res = creep.harvest(Game.getObjectById(creep.memory.sourceID))))
+            if ( OK != (res = creep.harvest(Game.getObjectById(creep.memory.sourceID))))
             {
                 console.log("Creep encountered Error " + String(res) + " while harvesting.")
-                excavation.releaseMiningSpot(creep.room.name, creep.memory.spotID)
-                module.exports.endTask(creep)
+                module.exports.endTask(creep.name)
             }
-        if (creep.ticksToLive <= 1)
-        {
-            excavation.releaseMiningSpot(creep.room.name, creep.memory.spotID)
-            module.exports.endTask(creep)
-        }
     },
     
     value : function(creep)
@@ -72,11 +67,13 @@ module.exports = {
         }
     },
     
-    endTask : function(creep)
+    endTask : function(creepName)
     {
-        creep.memory.task = task.IDLE
-        delete creep.memory.spotID
-        delete creep.memory.spotLoc
-        delete creep.memory.sourceID
+        excavation.releaseMiningSpot(Memory.creeps[creepName].room, Memory.creeps[creepName].spotID)
+        Memory.creeps[creepName].task = TaskType.IDLE
+        delete Memory.creeps[creepName].spotID
+        delete Memory.creeps[creepName].spotLoc
+        delete Memory.creeps[creepName].sourceID
+        delete Memory.creeps[creepName].room
     }
 };

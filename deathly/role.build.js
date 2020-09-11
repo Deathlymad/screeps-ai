@@ -40,7 +40,7 @@ module.exports = {
             }
             else if (res == ERR_INVALID_TARGET)
             {
-                module.exports.endTask(creep)
+                module.exports.endTask(creep.name)
             }
         }
     },
@@ -83,9 +83,9 @@ module.exports = {
         creep.memory.site = data.site
     },
     
-    endTask : function(creep)
+    endTask : function(creepName)
     {
-        creep.memory.task = task.IDLE
-        delete creep.memory.site
+        Memory.creeps[creepName].task = task.IDLE
+        delete Memory.creeps[creepName].site
     }
 };
