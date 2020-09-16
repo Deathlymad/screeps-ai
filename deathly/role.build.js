@@ -19,15 +19,15 @@ module.exports = {
     update : function(creep)
     {
         if (creep.store[RESOURCE_ENERGY] == 0) {
-            state = true
+            creep.memory.state = true
         }
         else if (creep.store.getFreeCapacity() == 0) {
-            state = false
+            creep.memory.state = false
         }
         else
-            state = true
+            creep.memory.state = true
         
-        if(state) {
+        if(creep.memory.state) {
             var sourceGoal = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter : function(obj){
                 return obj.structureType == STRUCTURE_CONTAINER && obj.store[RESOURCE_ENERGY] > 100
             }})

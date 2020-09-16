@@ -139,12 +139,19 @@ module.exports = {
             }
         })
         
-        mineSpot = mineSpot.concat(constructionSites)
-        
         knownSpots = Object.keys(Memory.rooms[room].miningSpots).map(x => Memory.rooms[room].miningSpots[x].pos)
         
         mineSpots = mineSpot.map(x => x.pos)
         
+        var ret = [];
+        for(var i in mineSpots) {   
+            for (knownSpotKey in constructionSites)
+                if (mineSpots[i].x == knownSpots[knownSpotKey].x && mineSpots[i].y == knownSpots[knownSpotKey].y && mineSpots[i].roomName == knownSpots[knownSpotKey].roomName)
+                    ret.push(i);
+        }
+        for (entry of ret)
+            mineSpots.splice(entry, 1)
+            
         var ret = [];
         for(var i in mineSpots) {   
             for (knownSpotKey in knownSpots)

@@ -15,7 +15,7 @@ function updateConstructionList(room)
     
     for (site of constructionSites)
     {
-        if (Object.keys(Memory.rooms[room].maintance.constructionSites).indexOf(site) == -1)
+        if (!Object.keys(Memory.rooms[room].maintance.constructionSites).includes(site))
         {
             Memory.rooms[room].maintance.constructionSites[site] = STATE_FREE
         }
@@ -81,6 +81,7 @@ module.exports = {
         {
             if (Memory.rooms[room].maintance.repairSites[site] == STATE_FREE)
             {
+                console.log(site)
                 taskmaster.addTask(repairTask.createTask(site))
                 Memory.rooms[room].maintance.repairSites[site] = STATE_ACTIVE
             }
@@ -88,8 +89,9 @@ module.exports = {
         
         for (site in Memory.rooms[room].maintance.constructionSites)
         {
-            if (Memory.rooms[room].maintance.constructionSites[site] == STATE_FREE)
+            if (Memory.rooms[room].maintance.constructionSites[site] === STATE_FREE)
             {
+                console.log(site)
                 taskmaster.addTask(buildTask.createTask(site))
                 Memory.rooms[room].maintance.constructionSites[site] = STATE_ACTIVE
             }
@@ -98,6 +100,7 @@ module.exports = {
     
     unlockState : function(room, site)
     {
+        console.log(site)
         Memory.rooms[room].maintance.constructionSites[site] = STATE_FREE
     }
 };
