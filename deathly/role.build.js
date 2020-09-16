@@ -24,6 +24,8 @@ module.exports = {
         else if (creep.store.getFreeCapacity() == 0) {
             state = false
         }
+        else
+            state = true
         
         if(state) {
             var sourceGoal = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter : function(obj){

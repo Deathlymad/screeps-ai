@@ -2,6 +2,7 @@ var overlayRegistration = require("overlay.registration")
 var mathUtil = require("util.math")
 var taskmaster = require("role.taskmaster.interface")
 var miner = require("role.mine.interface")
+var scheduler = require("system.schedule")
 
 var FREE = -1
 var RESERVED = 0
@@ -44,6 +45,33 @@ function visualizeTargetMiningSpots(visual)
     }
 }
 
+function buildNewSpots(room, delta)
+{
+    targetSpots = {}
+    for (entry of Memory.rooms[room].potentialMiningSpots)
+    {
+        if (!targetSpots[entry.sourceID])
+            targetSpots[entry.sourceID] = []
+        targetSpots[entry.sourceID].push(entry.pos)
+    }
+    
+    counts= {}
+    
+    for (entry in Memory.rooms[room].miningSpots)
+        counts[Memory.rooms[room].miningSpots[entry].sourceID] = Math.max(0, isNaN(counts[Memory.rooms[room].miningSpots[entry]]) ? -Infinity : counts[Memory.rooms[room].miningSpots[entry]]) + 1
+    
+    for (entry in targetSpots)
+    {
+        targetSpots[entry].sort((a, b) => cmp(a, b) ? 1 : -1)
+        
+        maxLen = Math.max(0, Math.min(targetSpots[entry].length, 2 - (isNaN(counts[entry]) ? 0 : counts[entry])))
+        
+        for (i = 0; i < maxLen; i++)
+        {
+            Game.rooms[room].createConstructionSite(targetSpots[entry][i].x, targetSpots[entry][i].y, STRUCTURE_CONTAINER, "MiningContainer" + String(Math.random() * 1000)) //create spot
+        }
+    }
+}
 
 module.exports = {
     setup : function(room)
@@ -83,6 +111,8 @@ module.exports = {
         
         overlayRegistration.registerOverlay(visualizeTargetMiningSpots, "displayTargetSpotOverlay", "Renders the room overlay displaying all target potential mining spots.")
         
+        scheduler.registerCallEx(buildNewSpots.bind(null, room), "BuildNewMiningSpots", 5, 1000)
+        
         //actually dynamic
     },
     
@@ -98,6 +128,18 @@ module.exports = {
                 }
             }
         })
+        constructionSites = Game.rooms[room].find(FIND_CONSTRUCTION_SITES, {filter : function(obj) {
+                if (obj.structureType == STRUCTURE_CONTAINER)
+                {
+                    for (id in Memory.rooms[room].sources)
+                        if (Math.abs(Memory.rooms[room].sources[id].pos.x - obj.pos.x) <= 1 && Math.abs(Memory.rooms[room].sources[id].pos.y - obj.pos.y) <= 1)
+                            return true
+                    return false
+                }
+            }
+        })
+        
+        mineSpot = mineSpot.concat(constructionSites)
         
         knownSpots = Object.keys(Memory.rooms[room].miningSpots).map(x => Memory.rooms[room].miningSpots[x].pos)
         

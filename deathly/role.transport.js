@@ -128,6 +128,7 @@ module.exports = {
     
     initCreep : function(data, creep)
     {
+        creepName = creep.name
         Memory.creeps[creepName].task = TaskType.TRANSPORTING
         
         Memory.creeps[creepName].src = { id : data.resSource.id, pos : data.resSource.pos}

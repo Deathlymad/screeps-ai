@@ -61,11 +61,16 @@ module.exports = {
                     {
                         if (TaskModule[newTask.id].value(Game.creeps[name]) < TaskModule[Memory.taskmaster.queue[entry].id].value(Game.creeps[name]))
                         {
+                            //console.log(TaskModule[newTask.id].value(Game.creeps[name]))
+                            //console.log(newTask.id)
+                            //console.log(TaskModule[Memory.taskmaster.queue[entry].id].value(Game.creeps[name]))
+                            //console.log(Memory.taskmaster.queue[entry].id)
                             newTask = Memory.taskmaster.queue[entry]
                             newTaskEntry = entry
                         }
                     }
                     
+                
                     Memory.taskmaster.queue.splice(newTaskEntry, 1)
                     
                     TaskModule[newTask.id].initCreep(newTask, Game.creeps[name]) //objectify

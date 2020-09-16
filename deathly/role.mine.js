@@ -36,7 +36,7 @@ module.exports = {
     value : function(creep)
     {
         if (creep.body.every((obj) => obj.type == WORK || obj.type == MOVE)) //this unit cannot carry, it is a dedicated miner
-            return 100
+            return 150
         else
         {
             score = 0
@@ -63,7 +63,7 @@ module.exports = {
                 }
             }
             
-            return score / creep.body.length
+            return (score / creep.body.length) + 50
         }
     },
     

@@ -24,8 +24,8 @@ module.exports = {
             }
         
         if (data.includes("Miner")) {
-            if (Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Miner") === OK)
-                scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Miner")}, "onSpawn_Miner_Hive", 12)
+            if (Game.spawns["Hive"].spawnCreep([WORK, WORK, CARRY, MOVE, MOVE], "Miner") === OK)
+                scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Miner")}, "onSpawn_Miner_Hive", 15)
         }
         if (data.includes("Upgrader")) {
             if (Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Upgrader") === OK)
@@ -36,8 +36,8 @@ module.exports = {
                 scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Builder")}, "onSpawn_Builder_Hive", 12)
         }
         if (data.includes("Harvester")) {
-            if (Game.spawns["Hive"].spawnCreep([WORK, CARRY, MOVE, MOVE], "Harvester") === OK)
-                scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Harvester")}, "onSpawn_Harvester_Hive", 12)
+            if (Game.spawns["Hive"].spawnCreep([WORK, CARRY, CARRY, MOVE, MOVE], "Harvester") === OK)
+                scheduler.registerOffsetCall( function(){creepHandler.onSpawn("Harvester")}, "onSpawn_Harvester_Hive", 15)
         }
     }
 };

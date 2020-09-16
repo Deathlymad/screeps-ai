@@ -27,6 +27,7 @@ module.exports = { //should be added to prototype
         {
             console.log("Creep " + creep + " is supposed to have died but it seems he escaped death. for now. (" + Game.creeps[creep].ticksToLive + " ticks)")
             scheduler.registerOffsetCall( function(){module.exports.onDeath(creep)}, "onDeath_" + creep + "_Hive", Game.creeps[creep].ticksToLive + 1)
+            return
         }
         
         //console.log("Clearing up Creep " + creep)

@@ -9,12 +9,10 @@ var creep = require("role.creep")
 
 var setup = false;
 module.exports.loop = function () {
-    
+    //console.log("<script>var fs = require('fs'); console.log(fs.opendirSync(__dirname).path);</script>")
     if (!setup)
     {
         scheduler.setup()
-        //scheduler.registerCallEx( ()=> console.log("test"), "TestFunc", 2, 5)
-        //scheduler.registerCallEx( ()=> console.log("test2"), "TestFunc", 1, 6)
         
         //init code 
         cliUtil.setup()

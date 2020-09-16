@@ -75,7 +75,7 @@ module.exports = {
             }
         }
         
-        return score / creep.body.length
+        return score / (creep.body.length + 1)
     },
     
     initCreep : function(data, creep)
